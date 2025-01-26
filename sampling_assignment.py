@@ -56,16 +56,16 @@ print("\nSystematic Sample:\n", systematic_sample.head())
 stratified_sample, _ = train_test_split(data, test_size=(1 - n / len(data)), stratify=data['Class'], random_state=42)
 print("\nStratified Sample:\n", stratified_sample['Class'].value_counts())
 
-data_balanced = data.copy()  # Create a copy of the original data
-data_balanced['Cluster'] = pd.qcut(data_balanced['V1'], q=10, labels=False)  # Divide into 10 clusters based on 'V1'
-selected_clusters = data_balanced['Cluster'].sample(n=2, random_state=42).unique()  # Select 2 random clusters
+data_balanced = data.copy()  
+data_balanced['Cluster'] = pd.qcut(data_balanced['V1'], q=10, labels=False) 
+selected_clusters = data_balanced['Cluster'].sample(n=2, random_state=42).unique() 
 cluster_sample = data_balanced[data_balanced['Cluster'].isin(selected_clusters)]
 
-# Check class distribution in the cluster sample
+
 class_distribution = cluster_sample['Class'].value_counts()
 print("\nCluster Sample Class Distribution:\n", class_distribution)
 
-# If the sample has only one class, resample from the data
+
 if len(class_distribution) < 2:
     print("Cluster sample contains only one class. Resampling...")
     cluster_sample = data_balanced.sample(n=n, random_state=42)
